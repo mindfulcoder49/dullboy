@@ -45,6 +45,7 @@ Route::middleware([
 });
 
 
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('virtues', VirtueController::class);
 });

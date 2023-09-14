@@ -55,14 +55,17 @@ class VirtueController extends Controller
         if ($virtue->user_id !== Auth::id()) {
             abort(403);
         }
-
+        
+        
+        
         $data = $request->validate([
-            'data' => 'required|json'
+            'virtueData' => 'required|json'
         ]);
-
+        $data['data'] = $request->input('virtueData');
+        
         $virtue->update($data);
 
-        return redirect()->route('virtues.index');
+        //return redirect()->route('virtues.index');
     }
 
     public function destroy(Virtue $virtue)

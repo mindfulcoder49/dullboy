@@ -1,7 +1,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import VirtuesList from '@/Pages/Virtues/Index.vue'; // Assuming you have this component
-import CreateVirtue from '@/Pages/Virtues/Create.vue'; // Assuming you have this component
+import VirtuesList from '@/Pages/Virtues/Index.vue'; 
+import CreateVirtue from '@/Pages/Virtues/Create.vue'; 
+import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
     virtues: {
@@ -11,6 +12,9 @@ defineProps({
 </script>
 
 <template>
+    <Head>
+        <title>Dashboard</title>
+    </Head>
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">

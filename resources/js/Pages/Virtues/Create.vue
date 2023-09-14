@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 clear-left">
       <h1 class="text-2xl font-semibold mb-4">Create a New Virtue</h1>
       <p class="text-gray-600 mb-4">Fill in the details to create a new virtue.</p>
       
