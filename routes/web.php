@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\VirtueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', function () {
     ]);
 });
 
+/*
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -32,4 +34,29 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+}); */
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', [VirtueController::class, 'index'])->name('dashboard');
 });
+
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resource('virtues', VirtueController::class);
+});
+
+
+/*
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/virtues', [VirtueController::class, 'index'])->name('virtues.index');
+    Route::get('/virtues/create', [VirtueController::class, 'create'])->name('virtues.create');
+    Route::post('/virtues', [VirtueController::class, 'store'])->name('virtues.store');
+    Route::get('/virtues/{virtue}', [VirtueController::class, 'show'])->name('virtues.show');
+    // Define other routes as needed for edit, update, and delete actions
+});
+
+*/
