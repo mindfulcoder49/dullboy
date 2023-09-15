@@ -77,7 +77,6 @@
           type="checkbox"
           id="harmful"
           v-model="form.harmful"
-          :checked="form.harmful"
           class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
       </div>
