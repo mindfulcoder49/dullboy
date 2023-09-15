@@ -5,15 +5,25 @@
       
       <form @submit.prevent="createVirtue">
         <div class="mb-4">
-          <label for="virtueData" class="block text-gray-700 text-sm font-bold mb-2">Data:</label>
+          <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
           <input
             type="text"
-            id="virtueData"
-            v-model="form.virtueData"
+            id="name"
+            v-model="form.name"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
-          <!-- Display validation error for 'virtueData' field -->
-          <div v-if="form.errors.virtueData" class="text-red-500 text-xs mt-2">{{ form.errors.virtueData }}</div>
+          <!-- Display validation error for 'name' field -->
+          <div v-if="form.errors.name" class="text-red-500 text-xs mt-2">{{ form.errors.name }}</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Bad Habit?</label>
+          <input
+            type="checkbox"
+            id="harmful"
+            v-model="form.harmful"
+            class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
         </div>
         
         <button
@@ -31,15 +41,18 @@
     data() {
       return {
         form: this.$inertia.form({
-          virtueData: '' // Renamed 'data' to 'virtueData'
-        })
+          name: '',
+          count: 1,
+          timeinterval: 0,
+          harmful: 0,
+        }),
       };
     },
     methods: {
       createVirtue() {
         this.form.post('/virtues', {
           onSuccess: () => {
-            this.form.reset('virtueData'); // Renamed 'data' to 'virtueData'
+            
           }
         });
       }

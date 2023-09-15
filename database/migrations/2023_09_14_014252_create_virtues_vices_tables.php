@@ -14,35 +14,24 @@ return new class extends Migration
         Schema::create('virtues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('data');
-            $table->timestamps();
-        });
-    
-        Schema::create('vices', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('data');
             $table->timestamps();
         });
     
         Schema::create('refined_vices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('data');
             $table->timestamps();
         });
     
         Schema::create('refined_virtues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('data');
             $table->timestamps();
         });
     
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('data');
             $table->timestamps();
         });
     }

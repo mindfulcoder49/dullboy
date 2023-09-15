@@ -18,7 +18,7 @@ class VirtueController extends Controller
     {
         $virtues = Auth::user()->virtues;
         
-        return Inertia::render('Dashboard', ['virtues' => $virtues]);
+        return Inertia::render('Virtues/Index', ['virtues' => $virtues]);
     }
 
     public function create()
@@ -30,10 +30,12 @@ class VirtueController extends Controller
     {
         
         $data = $request->validate([
-            'virtueData' => 'required|json'
+            'name' => 'required|string',
+            'count' => 'required|integer',
+            'timeinterval' => 'required|integer',
+            'harmful' => 'boolean',
         ]);
-
-        $data['data'] = $request->input('virtueData');
+        
         Auth::user()->virtues()->create($data);
     
         //return redirect()->route('virtues.index');
@@ -59,9 +61,11 @@ class VirtueController extends Controller
         
         
         $data = $request->validate([
-            'virtueData' => 'required|json'
+            'name' => 'required|string',
+            'count' => 'required|integer',
+            'timeinterval' => 'required|integer',
+            'harmful' => 'boolean'
         ]);
-        $data['data'] = $request->input('virtueData');
         
         $virtue->update($data);
 
@@ -76,6 +80,6 @@ class VirtueController extends Controller
         }
 
         $virtue->delete();
-        return redirect()->route('virtues.index');
+        //return redirect()->route('virtues.index');
     }
 }
