@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use App\Models\Vice;
 use App\Models\Virtue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +16,8 @@ class DashboardController extends BaseController
 
     public function index()
     {
-        $virtues = Auth::user()->virtues;
-        $vices = Auth::user()->vices;
-        
-        return Inertia::render('Dashboard', ['virtues' => $virtues, 'vices' => $vices]);
+        $virtues = Auth::user()->virtues()->orderBy('harmful', 'asc')->orderBy('name','asc')->get();
+        return Inertia::render('Dashboard', ['virtues' => $virtues]);
     }
+    
 }

@@ -5,20 +5,20 @@
 
     <form @submit.prevent="updateVirtue">
       <!-- Add form fields for virtue editing -->
-      <div class="mb-4">
-        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+      <div class="mb-4"> <!--
+        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label> -->
         <input
           type="text"
           id="name"
-          v-model="form.name"
+          v-model="virtue.name"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
       </div>
         
 
       <!-- Buttons to increment/decrement count -->
-      <div class="mb-4">
-        <label for="count" class="block text-gray-700 text-sm font-bold mb-2">Count:</label>
+      <div class="mb-4"> <!--
+        <label for="count" class="block text-gray-700 text-sm font-bold mb-2">Count:</label> -->
         <div class="flex items-center">
           <button
             type="button"
@@ -30,7 +30,7 @@
           <input
             type="text"
             id="count"
-            v-model="form.count"
+            v-model="virtue.count"
             class="shadow appearance-none border border-r-0 rounded-r w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
           <button
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <!-- Buttons to increment/decrement timeinterval -->
+      <!-- Buttons to increment/decrement timeinterval 
       <div class="mb-4">
         <label for="time" class="block text-gray-700 text-sm font-bold mb-2">Time Interval:</label>
         <div class="flex items-center">
@@ -57,7 +57,7 @@
           <input
             type="text"
             id="time"
-            v-model="form.timeinterval"
+            v-model="virtue.timeinterval"
             class="shadow appearance-none border border-r-0 rounded-r w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
           <button
@@ -69,34 +69,38 @@
           </button>
         </div>
       </div>
+      -->
 
       <!-- Add a checkbox for harmful -->
       <div class="mb-4">
-        <label for="harmful" class="block text-gray-700 text-sm font-bold mb-2">Bad Habit?</label>
+        <label for="harmful" class="inline-block text-gray-700 text-sm font-bold mb-2 pb-2 pr-2 ">Bad Habit?</label>
         <input
           type="checkbox"
           id="harmful"
-          v-model="form.harmful"
+          v-model="virtue.harmful"
+          :checked = "virtue.harmful"
           class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
-      </div>
-      
-
-      <button
-        type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Update
-      </button>
-
-      <!-- Add the delete button here -->
+              <!-- Add the delete button here -->
       <button
         type="button"
         @click="deleteVirtue"
-        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+        class="block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
       >
         Delete
       </button>
+      </div>  
+      
+      <!--
+      <button
+        type="button"
+        class="bg-blue-500 hover:bg-blue-7  00 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+        id="update-button" 
+        ref="updateButton"
+        @click="updateVirtue"
+      > 
+        Update
+      </button> -->
 
     </form>
   </div>
@@ -107,25 +111,12 @@ export default {
   props: {
     virtue: Object,
   },
-  data() {
-    return {
-      form: this.$inertia.form({
-        name: this.virtue.name,
-        count: this.virtue.count,
-        timeinterval: this.virtue.timeinterval,
-        harmful: this.virtue.harmful,
-      }),
-    };
-  },
   methods: {
     updateVirtue() {
-      this.form.put(`/virtues/${this.virtue.id}`, {
+      this.$inertia.put(`/virtues/${this.virtue.id}`, this.virtue, {
         onSuccess: () => {
           // You can add any success actions here, like showing a notification
         },
-      }, {
-        // Use preserveScroll option here
-        preserveScroll: true,
       });
     },
     deleteVirtue() {
@@ -143,19 +134,21 @@ export default {
     },
     incrementCount() {
       // Increment the count field by 1
-      this.form.count = parseInt(this.form.count) + 1;
+      this.virtue.count = parseInt(this.virtue.count) + 1;
+      this.updateVirtue();
     },
     decrementCount() {
       // Decrement the count field by 1
-      this.form.count = parseInt(this.form.count) - 1;
+      this.virtue.count = parseInt(this.virtue.count) - 1;
+      this.updateVirtue();
     },
     incrementTime() {
       // Increment the timeinterval field by 15
-      this.form.timeinterval = parseInt(this.form.timeinterval) + 15;
+      this.virtue.timeinterval = parseInt(this.virtue.timeinterval) + 15;
     },
     decrementTime() {
       // Decrement the timeinterval field by 15
-      this.form.timeinterval = parseInt(this.form.timeinterval) - 15;
+      this.virtue.timeinterval = parseInt(this.virtue.timeinterval) - 15;
     },
   },
 };

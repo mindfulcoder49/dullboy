@@ -6,6 +6,7 @@ use App\Models\Virtue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Http\Controllers\DashboardController;
 
 class VirtueController extends Controller
 {
@@ -37,6 +38,11 @@ class VirtueController extends Controller
         ]);
         
         Auth::user()->virtues()->create($data);
+
+        //call reward function on this if harmful is false
+        if ($data['harmful'] == false) {
+            $rewardedVirtue = $this->reward();
+        }
     
         //return redirect()->route('virtues.index');
     }
@@ -69,7 +75,15 @@ class VirtueController extends Controller
         
         $virtue->update($data);
 
-        //return redirect()->route('virtues.index');
+        
+        //call reward function on this if harmful is false
+        if ($data['harmful'] == false) {
+            $rewardedVirtue = $this->reward();
+        }
+
+        //return redirect to dashboard controllers index function
+        //return redirect()->route('dashboard');
+
     }
 
     public function destroy(Virtue $virtue)
@@ -81,5 +95,29 @@ class VirtueController extends Controller
 
         $virtue->delete();
         //return redirect()->route('virtues.index');
+    }
+
+    //public function reward that chooses a random virtue with harmful = true and subtracts 1 from count. the chosen harmful virtue should be weighted by the percentage the count of each harmful virtue is the total count of all harmful virtues.
+    public function reward() {
+        $harmfulVirtues = Auth::user()->virtues()->where('harmful', true)->get();
+        //check if harmful virtues is empty and return null if it is
+        if ($harmfulVirtues->isEmpty()) {
+            return null;
+        }
+        $totalHarmfulCount = 0;
+        foreach ($harmfulVirtues as $harmfulVirtue) {
+            $totalHarmfulCount += $harmfulVirtue->count + 10;
+        }
+        $randomNumber = rand(0, $totalHarmfulCount);
+        $currentCount = 0;
+        foreach ($harmfulVirtues as $harmfulVirtue) {
+            $currentCount += $harmfulVirtue->count + 10;
+            if ($currentCount >= $randomNumber) {
+                $harmfulVirtue->count -= 1;
+                $harmfulVirtue->save();
+                return $harmfulVirtue;
+                break;
+            }
+        }
     }
 }
