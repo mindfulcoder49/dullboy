@@ -1,35 +1,40 @@
 <template>
-  <div class="p-4 rounded-lg shadow-lg" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful}">
+  <div class="p-1 rounded-lg shadow-lg" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful}">
     <!--
-    <h2 v-if="!virtue.harmful" class="text-2xl font-semibold text-blue-800 mb-4">Edit Virtue</h2>
-    <h2 v-if="virtue.harmful" class="text-2xl font-semibold text-red-800 mb-4">Edit Vice</h2> -->
+    <h2 v-if="!virtue.harmful" class="text-2xl font-semibold text-blue-800 mb-2">Edit Virtue</h2>
+    <h2 v-if="virtue.harmful" class="text-2xl font-semibold text-red-800 mb-2">Edit Vice</h2> -->
 
-    <form @submit.prevent="updateVirtue">
+    <form @submit.prevent="updateVirtue"
+        >
       <!-- Add form fields for virtue editing -->
-      <div class="mb-4"> <!--
+      <div class="mb-2"> <!--
         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label> -->
       <textarea 
-        rows="1" 
-        @focus="event => event.target.setAttribute('rows', 3)" 
-        @blur="event => event.target.setAttribute('rows', 1)" 
+        ref="nameInput"
+        :rows="this.rows" 
+        @focus="openForEdit()" 
         class="transition-all duration-300 ease-in-out w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:py-0 focus:px-1 " 
         >{{ virtue.name }}</textarea>
 
       </div>
+      <div class="mb-2"> 
+        <!-- a close editor button that invokes closeForEdit -->
+        <button
+            v-if="this.rows==3"
+            type="button"
+            @click="closeForEdit"
+            class="text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline"
+            :class="{ 'bg-blue-500': !virtue.harmful, 'bg-red-500' : virtue.harmful }"
+          >
+            Close
+          </button>
+        </div>
         
 
       <!-- Buttons to increment/decrement count -->
-      <div class="mb-4"> <!--
+      <div class="mb-2"> <!--
         <label for="count" class="block text-gray-700 text-sm font-bold mb-2">Count:</label> -->
         <div class="flex items-center">
-          <button
-            type="button"
-            @click="decrementCount"
-            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-l focus:outline-none focus:shadow-outline"
-          >
-            -
-          </button>
-          
           <input
             type="text"
             id="count"
@@ -39,7 +44,8 @@
           <button
             type="button"
             @click="incrementCount"
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-3 rounded-r focus:outline-none focus:shadow-outline"
+            class="text-white font-bold py-2 px-3 rounded-r focus:outline-none focus:shadow-outline"
+            :class="{ 'bg-blue-500': !virtue.harmful, 'bg-red-500' : virtue.harmful }"
           >
             +
           </button>
@@ -47,7 +53,7 @@
       </div>
 
       <!-- Buttons to increment/decrement timeinterval 
-      <div class="mb-4">
+      <div class="mb-2">
         <label for="time" class="block text-gray-700 text-sm font-bold mb-2">Time Interval:</label>
         <div class="flex items-center">
           <button
@@ -75,11 +81,20 @@
       -->
 
     <!-- Add a dropdown for harmful -->
-    <div class="mb-4">
+    <div class="mb-2" ref="editDiv" v-if="this.rows==3">
       <!--
       <label for="harmful" class="inline-block text-gray-700 text-sm font-bold mb-2 pb-2 pr-2">Vice or Virtue?</label> -->
+      <button
+            type="button"
+            @click="decrementCount"
+            class=" text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline"
+            :class="{ 'bg-blue-500': virtue.harmful, 'bg-red-500' : !virtue.harmful }"
+          >
+            -
+          </button>
+          
       <select
-        id="harmful"
+        ref="harmful"
         v-model="virtue.harmful"
         class="inline shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-2/3"
       >
@@ -88,24 +103,24 @@
       </select>
               <!-- Add the delete button here -->
       <button
+        ref="deleteButton"
         type="button"
         @click="deleteVirtue"
-        class="inline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 ml-2 rounded focus:outline-none focus:shadow-outline"
+        class="block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 m-2 rounded focus:outline-none focus:shadow-outline"
+        
       >
-        X
+        Delete
       </button>
-      </div>  
-      
-      <!--
       <button
         type="button"
-        class="bg-blue-500 hover:bg-blue-7  00 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+        class="block bg-blue-500 hover:bg-blue-7  00 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
         id="update-button" 
         ref="updateButton"
         @click="updateVirtue"
       > 
         Update
-      </button> -->
+      </button>
+      </div>  
 
     </form>
   </div>
@@ -115,6 +130,11 @@
 export default {
   props: {
     virtue: Object,
+  },
+  data () {
+    return {
+      rows: 1,
+    }
   },
   methods: {
     updateVirtue() {
@@ -155,6 +175,12 @@ export default {
       // Decrement the timeinterval field by 15
       this.virtue.timeinterval = parseInt(this.virtue.timeinterval) - 15;
     },
+    openForEdit() {
+      this.rows = 3;
+    },
+    closeForEdit() {
+      this.rows = 1;
+    }
   },
 };
 </script>
