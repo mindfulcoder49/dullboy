@@ -72,12 +72,18 @@ class VirtueController extends Controller
             'timeinterval' => 'required|integer',
             'harmful' => 'boolean'
         ]);
+        //create a boolean to check if the count has increased by one
+        $countIncreased = false;
+        //check if the count has increased by one
+        if ($data['count'] == $virtue->count + 1) {
+            $countIncreased = true;
+        }
         
         $virtue->update($data);
 
         
         //call reward function on this if harmful is false
-        if ($data['harmful'] == false) {
+        if ($data['harmful'] == false && $countIncreased == true) {
             $rewardedVirtue = $this->reward();
         
 
