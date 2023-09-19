@@ -79,10 +79,13 @@ class VirtueController extends Controller
         //call reward function on this if harmful is false
         if ($data['harmful'] == false) {
             $rewardedVirtue = $this->reward();
-        }
+        
 
-        //return redirect to dashboard controllers index function
-        //return redirect()->route('dashboard');
+            //return redirect to dashboard controllers index function
+            return app(DashboardController::class)->index('Reward: ' . $rewardedVirtue->name . '!');
+
+
+        }
 
     }
 
@@ -97,27 +100,42 @@ class VirtueController extends Controller
         //return redirect()->route('virtues.index');
     }
 
-    //public function reward that chooses a random virtue with harmful = true and subtracts 1 from count. the chosen harmful virtue should be weighted by the percentage the count of each harmful virtue is the total count of all harmful virtues.
     public function reward() {
         $harmfulVirtues = Auth::user()->virtues()->where('harmful', true)->get();
-        //check if harmful virtues is empty and return null if it is
+        
+        // Check if harmful virtues is empty and return null if it is
         if ($harmfulVirtues->isEmpty()) {
             return null;
         }
-        $totalHarmfulCount = 0;
+    
+        // Find the minimum count among all harmful virtues
+        $minCount = $harmfulVirtues->min('count');
+    
+        // Calculate the base value to make all counts positive
+        $baseValue = abs($minCount) + 1;
+    
+        // Create an array to hold the virtues, repeated according to their adjusted counts
+        $virtueArray = [];
+    
         foreach ($harmfulVirtues as $harmfulVirtue) {
-            $totalHarmfulCount += $harmfulVirtue->count + 10;
-        }
-        $randomNumber = rand(0, $totalHarmfulCount);
-        $currentCount = 0;
-        foreach ($harmfulVirtues as $harmfulVirtue) {
-            $currentCount += $harmfulVirtue->count + 10;
-            if ($currentCount >= $randomNumber) {
-                $harmfulVirtue->count -= 1;
-                $harmfulVirtue->save();
-                return $harmfulVirtue;
-                break;
+            // Adjust the count to make it positive
+            $adjustedCount = $harmfulVirtue->count + $baseValue;
+    
+            // Repeat each virtue in the array according to its adjusted count
+            for ($i = 0; $i < $adjustedCount; $i++) {
+                $virtueArray[] = $harmfulVirtue;
             }
         }
+    
+        // Pick a random virtue from the array
+        $randomIndex = array_rand($virtueArray);
+        $selectedVirtue = $virtueArray[$randomIndex];
+    
+        // Update the count of the selected virtue
+        $selectedVirtue->count -= 1;
+        $selectedVirtue->save();
+    
+        return $selectedVirtue;
     }
+    
 }

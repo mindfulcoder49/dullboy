@@ -8,6 +8,9 @@ defineProps({
     virtues: {
         type: Array,
     },
+    message: {
+        type: String,
+    },
 });
 </script>
 
@@ -21,8 +24,21 @@ defineProps({
                 Dashboard
             </h2>
         </template>
+        <div 
+        v-if="message" 
+        @click="() => message = null" 
+        class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded relative"
+        >
+            <span class="block sm:inline">{{ message }} (Tap to dismiss)</span>
+        </div>
 
-        <div class="py-12">
+        <div 
+        v-if="!message"  
+        class="border border-transparent px-4 py-3 rounded relative"
+        >
+            <span class="block sm:inline">&nbsp</span>
+        </div>
+        <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
