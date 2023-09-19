@@ -113,8 +113,7 @@
       </button>
       <button
         type="button"
-        class="block bg-blue-500 hover:bg-blue-7  00 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-        id="update-button" 
+        class="block bg-blue-500 hover:bg-blue-7  00 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         ref="updateButton"
         @click="updateVirtue"
       > 
@@ -138,7 +137,9 @@ export default {
   },
   methods: {
     updateVirtue() {
+      this.virtue.name = this.$refs.nameInput.value;
       this.$inertia.put(`/virtues/${this.virtue.id}`, this.virtue, {
+
         onSuccess: () => {
           // You can add any success actions here, like showing a notification
         },
