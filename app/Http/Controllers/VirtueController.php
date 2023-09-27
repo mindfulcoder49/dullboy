@@ -84,11 +84,51 @@ class VirtueController extends Controller
         
         //call reward function on this if harmful is false
         if ($data['harmful'] == false && $countIncreased == true) {
-            $rewardedVirtue = $this->reward();
+            $rewardedVirtueArray = [];
+
+            //get random number between 1 and 5
+            $randomNumber = rand(0,100);
+
+            //define an array 0 to 5
+            $rewardArray = [0,1,2,3,4,5];
+
+            //define a weights array 10, 50, 80, 90, 98, 100
+            $weightArray = [10, 50, 80, 90, 98, 100];
+
+            $randomReward = 0;
+            $rewardMessage = "";
+
+            //loop through the weights array and check if the random number is less than the weight
+            for ($i = 0; $i < count($weightArray); $i++) {
+                if ($randomNumber < $weightArray[$i]) {
+                    $randomReward = $rewardArray[$i];
+                    break;
+                }
+            }
+
+            //call reward $randomReward times
+            for ($i = 0; $i < $randomReward; $i++) {
+                $rewardedVirtueArray[] = $this->reward();
+            }
+
+            //check if the array is empty
+            if (count ($rewardedVirtueArray) == 0) {
+                $rewardMessage = "You have not been rewarded.";
+            } 
+            else if (count($rewardedVirtueArray) == 1) {
+                $rewardMessage = count($rewardedVirtueArray) . " reward! " . $rewardedVirtueArray[0]->name . ".";
+            }
+            else if (count($rewardedVirtueArray) > 1) {
+                //list all reward names
+                $rewardMessage = count($rewardedVirtueArray) . " rewards! ";
+                foreach ($rewardedVirtueArray as $rewardedVirtue) {
+                    $rewardMessage .= $rewardedVirtue->name . ", ";
+                }
+            }
         
 
             //return redirect to dashboard controllers index function
-            return app(DashboardController::class)->index('Reward: ' . $rewardedVirtue->name . '!');
+            return app(DashboardController::class)->index($rewardMessage);
 
 
         }
@@ -132,8 +172,8 @@ class VirtueController extends Controller
                 $virtueArray[] = $harmfulVirtue;
             }
         }
-    
         // Pick a random virtue from the array
+
         $randomIndex = array_rand($virtueArray);
         $selectedVirtue = $virtueArray[$randomIndex];
     

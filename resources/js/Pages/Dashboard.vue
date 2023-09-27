@@ -27,9 +27,9 @@ defineProps({
         <div 
         v-if="message" 
         @click="() => message = null" 
-        class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded relative"
+        class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded relative text-center"
         >
-            <span class="block sm:inline">{{ message }} (Tap to dismiss)</span>
+            <span class="">{{ message }} (Tap to dismiss)</span>
         </div>
 
         <div 
