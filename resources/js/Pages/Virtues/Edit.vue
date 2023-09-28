@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 rounded-lg shadow-lg" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful}">
+  <div class="p-1 rounded-lg shadow-lg min-width-[100px]" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful, 'spin-fast-vice': isSpinning && virtue.harmful, 'spin-fast-virtue' : isSpinning && !virtue.harmful}">
     <!--
     <h2 v-if="!virtue.harmful" class="text-2xl font-semibold text-blue-800 mb-2">Edit Virtue</h2>
     <h2 v-if="virtue.harmful" class="text-2xl font-semibold text-red-800 mb-2">Edit Vice</h2> -->
@@ -13,7 +13,7 @@
         ref="nameInput"
         :rows="this.rows" 
         @focus="openForEdit()" 
-        class="transition-all duration-300 ease-in-out w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:py-0 focus:px-1 " 
+        class="transition-all duration-300 ease-in-out w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:py-0 focus:px-1 scroll-none" 
         >{{ virtue.name }}</textarea>
 
       </div>
@@ -133,15 +133,18 @@ export default {
   data () {
     return {
       rows: 1,
+      isSpinning: false,
     }
   },
   methods: {
     updateVirtue() {
       this.virtue.name = this.$refs.nameInput.value;
       this.$inertia.put(`/dashboard`, this.virtue, {
-
+        preserveScroll: true,
         onSuccess: () => {
           // You can add any success actions here, like showing a notification
+          //preserve the scroll
+
         },
       });
     },
@@ -161,6 +164,11 @@ export default {
     incrementCount() {
       // Increment the count field by 1
       this.virtue.count = parseInt(this.virtue.count) + 1;
+      this.isSpinning = true;
+
+      setTimeout(() => {
+        this.isSpinning = false;
+      }, 1500);
       this.updateVirtue();
     },
     decrementCount() {
@@ -185,3 +193,84 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Add this to your styles */
+.spin-fast-virtue {
+  animation: spinvirtue .75s linear infinite;
+}
+
+.spin-fast-vice {
+  animation: spinvice .75s linear infinite;
+}
+
+@keyframes spinvice {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  25% {
+    background: #f09b74;
+    opacity: .5;
+    transform:rotate(20deg);
+
+  }
+  50% {
+    background: #dd8f8c;
+    opacity: .9;
+   }
+   75% {
+    background: #ffb656;
+    opacity: .5;
+    transform:rotate(-20deg);
+  }
+  100% { 
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes spinvirtue {
+  0% { 
+    transform: rotate(0deg);
+  }
+  25% {
+    background: #93f7b4;
+    opacity: .9;
+    transform: rotate(20deg);
+  }
+  50% {
+    background: #6eca6e;
+    opacity: .5;
+   }
+   75% {
+    background: #93f7ea;
+    opacity: .9;
+    transform: rotate(-20deg);
+  }
+  100% { 
+    transform: rotate(0deg);
+  }
+}
+
+.pulsating-gradient {
+  background: radial-gradient(circle, white, blue);
+  background-size: 200% 200%;
+  background-position: center center;
+  animation: pulse 10s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-size: 100% 100%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: center center;
+  }
+  100% {
+    background-size: 100% 100%;
+    background-position: right center;
+  }
+}
+
+</style>
