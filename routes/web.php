@@ -49,6 +49,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::put('/dashboard', [DashboardController::class, 'update'])->name('dashboard');
 });
 
 

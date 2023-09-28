@@ -39,7 +39,7 @@
             type="text"
             id="count"
             v-model="virtue.count"
-            class="shadow appearance-none border border-r-0 rounded-r w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            class="shadow appearance-none border border-r-0 rounded-l w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           > 
           <button
             type="button"
@@ -138,7 +138,7 @@ export default {
   methods: {
     updateVirtue() {
       this.virtue.name = this.$refs.nameInput.value;
-      this.$inertia.put(`/virtues/${this.virtue.id}`, this.virtue, {
+      this.$inertia.put(`/dashboard`, this.virtue, {
 
         onSuccess: () => {
           // You can add any success actions here, like showing a notification

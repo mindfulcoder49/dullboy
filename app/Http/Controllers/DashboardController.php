@@ -19,5 +19,20 @@ class DashboardController extends BaseController
         $virtues = Auth::user()->virtues()->orderBy('harmful', 'asc')->orderBy('name','asc')->get();
         return Inertia::render('Dashboard', ['virtues' => $virtues, 'message' => $message]);
     }
+
+    public function update(Request $request)
+    {
+ 
+        $virtueId = $request->input('id'); // Assuming virtue ID is passed as virtue.id
+        $virtue = Virtue::where('id', $virtueId)->where('user_id', Auth::id())->first();
+        
+        if (!$virtue) {
+            abort(403);
+        } else {
+            //call the virtueController update method
+            $virtueController = new VirtueController();
+            return $virtueController->update($request, $virtue);
+        }
+    }
     
 }

@@ -59,6 +59,7 @@ class VirtueController extends Controller
 
     public function update(Request $request, Virtue $virtue)
     {
+
         // Ensure the virtue belongs to the user
         if ($virtue->user_id !== Auth::id()) {
             abort(403);
@@ -126,7 +127,6 @@ class VirtueController extends Controller
                 }
             }
         
-
             //return redirect to dashboard controllers index function
             return app(DashboardController::class)->index($rewardMessage);
 
