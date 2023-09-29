@@ -128,7 +128,7 @@ class VirtueController extends Controller
             }
         
             //return redirect to dashboard controllers index function
-            return app(DashboardController::class)->index($rewardMessage);
+            return app(DashboardController::class)->index($rewardMessage, $data['name']);
 
 
         }

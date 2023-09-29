@@ -11,6 +11,9 @@ defineProps({
     message: {
         type: String,
     },
+    virtueName: {
+        type: String,
+    },
 });
 </script>
 
@@ -21,19 +24,11 @@ defineProps({
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Virtues and Vices
             </h2>
         </template>
-        <div 
-        v-if="message" 
-        @click="() => message = null" 
-        class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded relative text-center"
-        >
-            <span class="">{{ message }} (Tap to dismiss)</span>
-        </div>
 
-        <div 
-        v-if="!message"  
+        <div
         class="border border-transparent px-4 py-3 rounded relative"
         >
             <span class="block sm:inline">&nbsp</span>
@@ -43,7 +38,7 @@ defineProps({
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-10">
                     <!-- Display the user's virtues -->
-                    <VirtuesList :virtues="virtues" />
+                    <VirtuesList :virtues="virtues" :message="message" :virtueName="virtueName" />
                 </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <!-- Provide a link or button to create a new virtue -->

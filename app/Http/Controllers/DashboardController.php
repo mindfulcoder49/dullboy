@@ -14,10 +14,10 @@ class DashboardController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function index( $message = null )
+    public function index( $message = null, $virtueName = null )
     {
         $virtues = Auth::user()->virtues()->orderBy('harmful', 'asc')->orderBy('name','asc')->get();
-        return Inertia::render('Dashboard', ['virtues' => $virtues, 'message' => $message]);
+        return Inertia::render('Dashboard', ['virtues' => $virtues, 'message' => $message, 'virtueName' => $virtueName]);
     }
 
     public function update(Request $request)

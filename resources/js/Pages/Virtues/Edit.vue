@@ -1,8 +1,15 @@
 <template>
-  <div class="p-1 rounded-lg shadow-lg min-width-[100px]" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful, 'spin-fast-vice': isSpinning && virtue.harmful, 'spin-fast-virtue' : isSpinning && !virtue.harmful}">
+  <div class="p-1 relative rounded-lg shadow-lg min-width-[100px]" :class="{'bg-blue-100': !virtue.harmful, 'bg-red-100': virtue.harmful, 'spin-fast-vice': isSpinning && virtue.harmful, 'spin-fast-virtue' : isSpinning && !virtue.harmful}">
     <!--
     <h2 v-if="!virtue.harmful" class="text-2xl font-semibold text-blue-800 mb-2">Edit Virtue</h2>
     <h2 v-if="virtue.harmful" class="text-2xl font-semibold text-red-800 mb-2">Edit Vice</h2> -->
+
+    <div 
+    v-if="message && virtueName == virtue.name" 
+    @click="() => message = null" 
+    class="bg-green-100 text-green-900 px-4 pt-6 rounded absolute inset-0 mx-auto text-center opacity-80 font-semibold pulsating-gradient flash-message"
+    >{{ message }} (Tap to dismiss)
+    </div>
 
     <form @submit.prevent="updateVirtue"
         >
@@ -128,7 +135,15 @@
 <script>
 export default {
   props: {
-    virtue: Object,
+    virtue: {
+        type: Object,
+      },
+      message: {
+        type: String,
+      },
+      virtueName: {
+        type: String,
+      },
   },
   data () {
     return {
@@ -168,8 +183,8 @@ export default {
 
       setTimeout(() => {
         this.isSpinning = false;
+        this.updateVirtue();
       }, 1500);
-      this.updateVirtue();
     },
     decrementCount() {
       // Decrement the count field by 1
@@ -202,6 +217,10 @@ export default {
 
 .spin-fast-vice {
   animation: spinvice .75s linear infinite;
+}
+
+.flash-message {
+  animation: flash 1s linear infinite;
 }
 
 @keyframes spinvice {
@@ -252,24 +271,28 @@ export default {
 }
 
 .pulsating-gradient {
-  background: radial-gradient(circle, white, blue);
+  background: radial-gradient(circle, #adf7c5, #93f7ea);
   background-size: 200% 200%;
   background-position: center center;
-  animation: pulse 10s infinite;
+  animation: pulse 2s .05s infinite;
+  opacity: 25%;
 }
 
 @keyframes pulse {
   0% {
     background-size: 100% 100%;
     background-position: left center;
+    opacity: 50%;
   }
   50% {
     background-size: 200% 200%;
     background-position: center center;
+    opacity: 80%;
   }
   100% {
     background-size: 100% 100%;
     background-position: right center;
+    opacity: 50%;
   }
 }
 
