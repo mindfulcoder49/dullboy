@@ -7,7 +7,7 @@
     <div 
     v-if="message && virtueName == virtue.name" 
     @click="() => message = null" 
-    class="bg-green-100 text-green-900 px-4 pt-6 rounded absolute inset-0 mx-auto text-center opacity-80 font-semibold pulsating-gradient flash-message"
+    class="bg-green-100 text-green-900 px-1 py-1 rounded absolute inset-0 mx-auto text-center opacity-80 font-semibold pulsating-gradient flash-message"
     >{{ message }} (Tap to dismiss)
     </div>
 
