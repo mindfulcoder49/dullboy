@@ -93,8 +93,8 @@ class VirtueController extends Controller
             //define an array 0 to 5
             $rewardArray = [0,1,2,3,4,5];
 
-            //define a weights array 10, 50, 80, 90, 98, 100
-            $weightArray = [10, 50, 80, 90, 98, 100];
+            //define a weights array 
+            $weightArray = [20, 80, 90, 95, 99, 100];
 
             $randomReward = 0;
             $rewardMessage = "";
@@ -109,7 +109,16 @@ class VirtueController extends Controller
 
             //call reward $randomReward times
             for ($i = 0; $i < $randomReward; $i++) {
-                $rewardedVirtueArray[] = $this->reward();
+                $rewardedVirtue = $this->reward();
+                //check if the rewardedVirtue.count is less than 0 
+                //if it is increment and save
+                if ($rewardedVirtue->count < 0) {
+                    $rewardedVirtue->count += 1;
+                    $rewardedVirtue->save();
+                } else {
+                    //add the rewarded virtue to the array
+                    $rewardedVirtueArray[] = $rewardedVirtue;
+                }
             }
 
             //check if the array is empty
@@ -121,7 +130,7 @@ class VirtueController extends Controller
             }
             else if (count($rewardedVirtueArray) > 1) {
                 //list all reward names
-                $rewardMessage = count($rewardedVirtueArray) . " rewards! ";
+                $rewardMessage = count($rewardedVirtueArray) . "! ";
                 foreach ($rewardedVirtueArray as $rewardedVirtue) {
                     $rewardMessage .= $rewardedVirtue->name . ", ";
                 }

@@ -7,8 +7,8 @@
     <div 
     v-if="message && virtueName == virtue.name" 
     @click="() => message = null" 
-    class="bg-green-100 text-green-900 px-1 py-1 rounded absolute inset-0 mx-auto text-center opacity-80 font-semibold pulsating-gradient flash-message"
-    >{{ message }} (Tap to dismiss)
+    class="px-1 py-1 rounded absolute inset-0 mx-auto text-center font-semibold pulsating-gradient flash-message"
+    >{{ message }}
     </div>
 
     <form @submit.prevent="updateVirtue"
@@ -20,7 +20,7 @@
         ref="nameInput"
         :rows="this.rows" 
         @focus="openForEdit()" 
-        class="transition-all duration-300 ease-in-out w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:py-0 focus:px-1 scroll-none" 
+        class="transition-all duration-300 ease-in-out w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:py-0 focus:px-1 scroll-none text-center" 
         >{{ virtue.name }}</textarea>
 
       </div>
@@ -39,24 +39,16 @@
         
 
       <!-- Buttons to increment/decrement count -->
-      <div class="mb-2"> <!--
-        <label for="count" class="block text-gray-700 text-sm font-bold mb-2">Count:</label> -->
-        <div class="flex items-center">
-          <input
-            type="text"
-            id="count"
-            v-model="virtue.count"
-            class="shadow appearance-none border border-r-0 rounded-l w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          > 
+      <div class="mb-2"> 
+
           <button
             type="button"
             @click="incrementCount"
-            class="text-white font-bold py-2 px-3 rounded-r focus:outline-none focus:shadow-outline"
+            class="text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline w-full"
             :class="{ 'bg-blue-500': !virtue.harmful, 'bg-red-500' : virtue.harmful }"
           >
-            +
+           {{ virtue.count }}
           </button>
-        </div>
       </div>
 
       <!-- Buttons to increment/decrement timeinterval 
@@ -182,9 +174,9 @@ export default {
       this.isSpinning = true;
 
       setTimeout(() => {
-        this.isSpinning = false;
         this.updateVirtue();
-      }, 1500);
+        setTimeout(() => { this.isSpinning = false;} , 400);
+      }, 1100);
     },
     decrementCount() {
       // Decrement the count field by 1
@@ -271,29 +263,34 @@ export default {
 }
 
 .pulsating-gradient {
-  background: radial-gradient(circle, #adf7c5, #93f7ea);
-  background-size: 200% 200%;
-  background-position: center center;
-  animation: pulse 2s .05s infinite;
-  opacity: 25%;
+  background: linear-gradient(to right, #f5f2f2, rgba(255, 254, 219, 0.9), #faf2f2b2, #f5f2f2);
+
+  background-size: 300% 300%;
+  background-position: 100% 50%;
+  animation: pulse 5s ease-in-out infinite;
+  box-shadow: 0 0 100px 5px rgba(255, 238, 0, 0.425); /* Blue halo */
+  overflow: visible;
+}
+.pulsating-gradient:before {
+  content: "";
+  display: block;
+  padding-top: 15%;
 }
 
 @keyframes pulse {
   0% {
-    background-size: 100% 100%;
-    background-position: left center;
-    opacity: 50%;
+    background-position: 200% 50%;
+    opacity: 1;
   }
   50% {
-    background-size: 200% 200%;
-    background-position: center center;
-    opacity: 80%;
+    background-position: 100% 50%;
+    opacity: .9;
   }
   100% {
-    background-size: 100% 100%;
-    background-position: right center;
-    opacity: 50%;
+    background-position: 200% 50%;
+    opacity: 1;
   }
 }
+
 
 </style>
